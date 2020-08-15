@@ -9,3 +9,7 @@ Instructor : Arpita Moitra
 Source Code : `01_freqency_analysis.py`
 
 Plot : `01_freqency_analysis.ipynb`
+
+## Assignment - 1 : Frequency Analysis
+
+Source Code : `01_permutaions.py`

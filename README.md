@@ -35,5 +35,10 @@ python3 01_permutaions.py
 
 Build and execute:
 ```
-
+cd 01_a_five_one
+cmake .
+make
+./afiveone 42 1
 ```
+
+The command to execute is `./afiveone <seed> <verbosity>`. Seed is used to randomly generate the session key and frame counter. Verbosity = 0 shows only the keystream generated.

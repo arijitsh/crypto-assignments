@@ -4,6 +4,8 @@ set(CMAKE_CXX_STANDARD 11)
 
 PROJECT(afiveone)
 
+add_compile_options( -g)
+
 add_executable(afiveone
     generator.cpp
     lfsr.cpp)

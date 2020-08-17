@@ -14,8 +14,9 @@ using namespace std;
 class LFSR
 {
     const int len;
-    bitset<22> reg;
+    bitset<23> reg;
     vector<int> tapped_bits;
+    int clocking_bit;
     Terminal * terminal;
 
 
@@ -24,9 +25,12 @@ public:
     void clock_a_bit(bool ext_bit);
     void print_register();
 
-    int  getbit(int k){
-        assert(k < len);
-        return(reg[k]) ;
+    int  get_clocking_bit(){
+        return(reg[clocking_bit]) ;
+    }
+
+    int  get_msb(){
+        return(reg[len-1]) ;
     }
 
 

@@ -13,15 +13,20 @@ class a51
 
     bitset<64> session_key;
     bitset<22> frame_counter;
+    bitset<228> out_key_stream;
 
     void set_tap_bits();
     void set_keys_counters();
 
 public:
     a51();
+
+    bool get_majority_vote();
+    void print_registers(int round = 0);
+
     void clock_session_key();
     void clock_frame_counter();
-    void print_registers();
+    void clock_majority_vote();
 };
 
 

@@ -7,7 +7,7 @@ PROJECT(afiveone)
 add_compile_options( -g)
 
 add_executable(afiveone
-    terminal.cc
+    terminal.cpp
     generator.cpp
     lfsr.cpp)
 

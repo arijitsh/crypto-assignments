@@ -13,7 +13,7 @@ class LFSR
 {
     const int len;
     bitset<22> reg;
-    vector<int> *tapped_bits;
+    vector<int> tapped_bits;
 
 
 public:

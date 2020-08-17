@@ -35,6 +35,7 @@ void a51::set_tap_bits()
     t1.push_back(13);
     t1.push_back(16);
     t1.push_back(17);
+    cout << t1.size() << endl;
     t1.push_back(18);
     t2.push_back(20);
     t2.push_back(21);
@@ -53,6 +54,14 @@ void a51::clock_session_key()
     }
 }
 
+void a51::clock_frame_counter()
+{
+    for(int i=0; i < 22;i++){
+        l1->clock_a_bit(frame_counter[i]);
+        l2->clock_a_bit(frame_counter[i]);
+        l3->clock_a_bit(frame_counter[i]);
+    }
+}
 
 
 void a51::print_registers()
@@ -67,8 +76,12 @@ int main(){
     a51 *G;
     srand(42);
     G = new a51();
-    G->print_registers();
+
     G->clock_session_key();
+    G->clock_frame_counter();
+
+    G->print_registers();
+
 }
 
 

@@ -20,6 +20,7 @@ class a51
 public:
     a51();
     void clock_session_key();
+    void clock_frame_counter();
     void print_registers();
 };
 

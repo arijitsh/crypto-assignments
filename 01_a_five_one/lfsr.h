@@ -7,6 +7,8 @@
 #include <vector>
 #include <assert.h>
 
+#include "terminal.h"
+
 using namespace std;
 
 class LFSR
@@ -14,6 +16,7 @@ class LFSR
     const int len;
     bitset<22> reg;
     vector<int> tapped_bits;
+    Terminal * terminal;
 
 
 public:

@@ -6,9 +6,18 @@ PROJECT(simon)
 
 add_compile_options( -g)
 
+
+find_package( Boost 1.46 COMPONENTS program_options)
+link_directories(${Boost_LIBRARY_DIRS})
+
+
 add_executable(simon
     main.cpp
     simon.cpp)
+
+target_link_libraries(simon
+${Boost_PROGRAM_OPTIONS_LIBRARY}
+)
 
 
 

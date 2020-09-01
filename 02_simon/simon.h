@@ -1,41 +1,50 @@
 #ifndef SIMON_H_INCLUDED
 #define SIMON_H_INCLUDED
 
-#define N 16 // word size
-#define N 16 // num keywords
-
-z = [11111010001001010110000111001101111101000100101011000011100110,
-10001110111110010011000010110101000111011111001001100001011010,
-10101111011100000011010010011000101000010001111110010110110011,
-11011011101011000110010111100000010010001010011100110100001111,
-11010001111001101011011000100000010111000011001010010011101111]
-
+#include <bitset>
 #include <cstdio>
 #include <cstdlib>
+#include <iostream>
+// setting up simon 32/64
 
+// #define N 16 // word size
+// #define M 4  // num keywords
+#define ROUNDS 32  // num rounds
+#define KEYSIZE 64 // N*M
 
-using std::endl;
+using namespace std;
+
+using std::bitset;
 using std::cout;
+using std::endl;
 
-class Simon
-{
-    bitset<22> left, right;
+class Simon {
 
-   public:
-    Simon();
+  bitset<KEYSIZE> key;
+  bitset<22> left, right;
 
-    void write_block();
+  bitset<22> z =
+      0b11111010001001010110000111001101111101000100101011000011100110;
+  // z[1] = 10001110111110010011000010110101000111011111001001100001011010;
+  // z[2] = 10101111011100000011010010011000101000010001111110010110110011;
+  // z[3] = 11011011101011000110010111100000010010001010011100110100001111;
+  // z[4] = 11010001111001101011011000100000010111000011001010010011101111;
 
-    void one_round_encryption();
-    void encrypt_a_block(int msg_block);
-    void encrypt(int message);
+public:
+  Simon();
 
-    void one_round_decryption();
-    void decrypt_a_block(int msg_block);
-    void decrypt(int message);
+  void write_block();
+  int get_next_block();
 
-    void expand_key();
+  void one_round_encryption();
+  void encrypt_a_block(int msg_block);
+  void encrypt(string, string);
+
+  void one_round_decryption();
+  void decrypt_a_block(int msg_block);
+  void decrypt(FILE *ciphertext);
+
+  void expand_key();
 };
-
 
 #endif // SIMON_H_INCLUDED

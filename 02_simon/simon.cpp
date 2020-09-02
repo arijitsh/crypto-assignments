@@ -4,22 +4,25 @@
 Simon::Simon() {}
 
 void Simon::expand_key() {
-    bitset<N> roundkey, tmp;
+    bitset<WORDSIZE> roundkey, tmp;
 
     int key_posision = 0;
-    for (int i = 0; i < M ; i++ ){
-        for(int j = 0; j < N; j++){
+    for (int i = 0; i < NUMKEYWORDS ; i++ ){
+        for(int j = 0; j < WORDSIZE; j++){
             roundkey.set(j, key[key_posision++]);
         }
         keys.push_back(roundkey);
+        cout << "key for round " << i << " : " << roundkey << endl;
     }
 
-    for(int  i = M; i < ROUNDS; i++){
-        tmp = key[i-1] >> 3;
-        if (M == 4) { tmp = tmp ^ keys[i-3]; }
+    for(int  i = NUMKEYWORDS; i < ROUNDS; i++){
+        tmp = keys[i-1] >> 3;
+        cout << tmp << endl << keys[i-3] << endl;
+        if (NUMKEYWORDS == 4) { tmp  ^= keys[i-3]; }
         tmp = tmp ^ (tmp >> 1);
-        keys[i] = (keys[i-M]) ^ tmp ^ z[(i-M) % 62] ^ 3;
-
+        keys[i] = (keys[i-NUMKEYWORDS]) ^ tmp ; //^ z[(i-M) % 62] ^ 3; // TODO : this is wrong
+        cout << "key for round " << i << " : " << roundkey << endl;
+        keys.push_back(roundkey);
     }
 }
 
@@ -43,9 +46,9 @@ void Simon::encrypt(string filename, string en_filename) {
 
         if(chars_added == BLOCK/8){
             chars_added = 0;
-            cout << "encrypting : " << block << endl;
             en_block = encrypt_a_block(block);
             c = en_block.to_string().c_str()[1]; // Needs to be corrected
+            cout << "plaintext block : " << block << " ciphertext block : " << en_block << endl;
             std::fputc(c, encrypted_file);
         }
     }
@@ -55,10 +58,24 @@ void Simon::encrypt(string filename, string en_filename) {
 }
 
 bitset<BLOCK> Simon::encrypt_a_block(bitset<BLOCK> block) {
-  bitset<22> tmp;
-  for (int i = 0; i < KEYSIZE; i++) {
-    tmp = left;
-    left = right ^ ((left << 1) &  (left << 8)) ^  (left<<2) ^ k[i];
-    right = tmp;
-  }
+    bitset<BLOCK> en_block;
+    for(int j = 0; j < BLOCK/2; j++){
+        left.set(j, block[j]);
+        right.set(j, block[j+BLOCK/2]);
+    }
+    for (int i = 0; i < ROUNDS; i++) {
+        tmp = left;
+        left = right ^ ((left << 1) &  (left << 8)) ^  (left<<2) ^ keys[i];
+        right = tmp;
+        cout << "round" << i <<  " converted " << block << " to " << left << right << endl;
+    }
+
+    for(int j = 0; j < BLOCK/2; j++){
+        en_block.set(j, left[j]);
+        en_block.set(j+BLOCK/2, right[j]);
+    }
+
+
+
+    return en_block;
 }

@@ -6,10 +6,11 @@
 #include <cstdlib>
 #include <iostream>
 #include <vector>
+
 // setting up simon 32/64
 
-#define N 16 // word size
-#define M 4  // num keywords
+#define WORDSIZE 16 // word size
+#define NUMKEYWORDS 4  // num keywords
 #define ROUNDS 32  // 2*N
 #define KEYSIZE 64 // N*M
 #define BLOCK 32    // block size
@@ -18,9 +19,9 @@ using namespace std;
 
 class Simon {
 
-  bitset<KEYSIZE> key;
-  bitset<22> left, right;
-  vector<bitset<N>> keys ;
+  bitset<KEYSIZE> key = 0b10001110111110010011000010110101000111011111001001100001011010; // TODO : read key from file
+  bitset<BLOCK/2> left, right, tmp;
+  vector<bitset<WORDSIZE>> keys ;
   bitset<64> z =
       0b11111010001001010110000111001101111101000100101011000011100110;
   // z[1] = 10001110111110010011000010110101000111011111001001100001011010;

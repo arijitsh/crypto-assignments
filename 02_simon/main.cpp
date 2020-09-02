@@ -55,8 +55,12 @@ int main(int argc, char **argv) {
         en_filename.append(filename);
 
     } else if (vm.count("decrypt")) {
-      cout << "Encrypting file : " << vm["encrypt"].as<std::string>() << ".\n";
+      cout << "Decrypting file : " << vm["decrypt"].as<std::string>() << ".\n";
+    } else {
+         cout << "c please mention a file to encrypt or decrypt." << endl;
+        assert(false);
     }
+
   } catch (exception &e) {
     cerr << "error: " << e.what() << "\n";
     return 1;

@@ -5,15 +5,18 @@
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>
+#include <vector>
 // setting up simon 32/64
 
 // #define N 16 // word size
 // #define M 4  // num keywords
 #define ROUNDS 32  // num rounds
 #define KEYSIZE 64 // N*M
+#define BLOCK 32    // block size
 
 using namespace std;
 
+using std::vector;
 using std::bitset;
 using std::cout;
 using std::endl;
@@ -22,7 +25,7 @@ class Simon {
 
   bitset<KEYSIZE> key;
   bitset<22> left, right;
-
+  vector<bitset<KEYSIZE>> keys ;
   bitset<22> z =
       0b11111010001001010110000111001101111101000100101011000011100110;
   // z[1] = 10001110111110010011000010110101000111011111001001100001011010;
@@ -37,7 +40,7 @@ public:
   int get_next_block();
 
   void one_round_encryption();
-  void encrypt_a_block(int msg_block);
+  bitset<BLOCK> encrypt_a_block(bitset<BLOCK> block);
   void encrypt(string, string);
 
   void one_round_decryption();

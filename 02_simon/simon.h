@@ -8,25 +8,20 @@
 #include <vector>
 // setting up simon 32/64
 
-// #define N 16 // word size
-// #define M 4  // num keywords
-#define ROUNDS 32  // num rounds
+#define N 16 // word size
+#define M 4  // num keywords
+#define ROUNDS 32  // 2*N
 #define KEYSIZE 64 // N*M
 #define BLOCK 32    // block size
 
 using namespace std;
 
-using std::vector;
-using std::bitset;
-using std::cout;
-using std::endl;
-
 class Simon {
 
   bitset<KEYSIZE> key;
   bitset<22> left, right;
-  vector<bitset<KEYSIZE>> keys ;
-  bitset<22> z =
+  vector<bitset<N>> keys ;
+  bitset<64> z =
       0b11111010001001010110000111001101111101000100101011000011100110;
   // z[1] = 10001110111110010011000010110101000111011111001001100001011010;
   // z[2] = 10101111011100000011010010011000101000010001111110010110110011;

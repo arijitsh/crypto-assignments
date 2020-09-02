@@ -4,17 +4,23 @@
 Simon::Simon() {}
 
 void Simon::expand_key() {
-  bitset<KEYSIZE> roundkey, tmp;
-      for(int  i = ROUNDS; i < KEYSIZE; i++){ //TODO : to change
-          tmp = key[i-1] >> 3;
-          if (ROUNDS = 4) {
-              tmp = tmp ^ k[i-3];
-          }
-          tmp = tmp ^ (tmp >> 1);
-//           k[i] ← (!k[i-m]) ^ tmp ^ (z[j][(i-m)) % 62] ^ 3;
+    bitset<N> roundkey, tmp;
 
+    int key_posision = 0;
+    for (int i = 0; i < M ; i++ ){
+        for(int j = 0; j < N; j++){
+            roundkey.set(j, key[key_posision++]);
+        }
         keys.push_back(roundkey);
-      }
+    }
+
+    for(int  i = M; i < ROUNDS; i++){
+        tmp = key[i-1] >> 3;
+        if (M == 4) { tmp = tmp ^ keys[i-3]; }
+        tmp = tmp ^ (tmp >> 1);
+        keys[i] = (keys[i-M]) ^ tmp ^ z[(i-M) % 62] ^ 3;
+
+    }
 }
 
 void Simon::encrypt(string filename, string en_filename) {

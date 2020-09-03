@@ -11,6 +11,17 @@ git clone https://github.com/arijitsh/crypto-assignments.git
 cd crypto-assignments
 ```
 
+## Assignment - 2 : Simon cipher
+
+Build and execute:
+```
+cd 02_simon
+cmake .
+make
+./simon --encrypt <plaintext file> --key <keyfile>
+./simon --decrypt <ciphertext file> --key <keyfile>
+```
+A sample plaintext file `sample.txt` and a keyfile `key.txt` is included. Issue `./simon --help` for more options. Use `--verb 1` or `--verb 2` to see the key expansion and encryption process.
 
 ## Assignment - 1 : Frequency Analysis
 Source Code : `01_freqency_analysis.py`

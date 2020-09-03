@@ -19,30 +19,25 @@ using namespace std;
 
 class Simon {
 
-  bitset<KEYSIZE> key = 0b10001110111110010011000010110101000111011111001001100001011010; // TODO : read key from file
+  bitset<KEYSIZE> key;
   bitset<BLOCK/2> left, right, tmp;
+  bitset<BLOCK> en_block, dec_block;
   vector<bitset<WORDSIZE>> keys ;
   bitset<64> z =
       0b11111010001001010110000111001101111101000100101011000011100110;
-  // z[1] = 10001110111110010011000010110101000111011111001001100001011010;
-  // z[2] = 10101111011100000011010010011000101000010001111110010110110011;
-  // z[3] = 11011011101011000110010111100000010010001010011100110100001111;
-  // z[4] = 11010001111001101011011000100000010111000011001010010011101111;
 
 public:
   Simon();
 
-  void write_block();
-  int get_next_block();
+  int verb = 0;
 
-  void one_round_encryption();
   bitset<BLOCK> encrypt_a_block(bitset<BLOCK> block);
   void encrypt(string, string);
 
-  void one_round_decryption();
-  void decrypt_a_block(int msg_block);
-  void decrypt(FILE *ciphertext);
+  bitset<BLOCK> decrypt_a_block(bitset<BLOCK> block);
+  void decrypt(string, string);
 
+  void read_key(string);
   void expand_key();
 };
 

@@ -6,7 +6,9 @@
 #include <cstdlib>
 #include <iostream>
 #include <vector>
-
+#include <bit>
+#include <assert.h>
+#include <fstream>
 // setting up simon 32/64
 
 #define WORDSIZE 16   // word size
@@ -24,16 +26,30 @@ using namespace std;
 
 inline bitset<WORDSIZE> binAdd(bitset<WORDSIZE> a, bitset<WORDSIZE> b)
 {
-    unsigned long sum = a.to_ulong() + b.to_ulong();
+    a >>= 8;
+    unsigned long sum = ( a.to_ulong() + b.to_ulong()) % 0b10000000000000000;
     std::bitset<WORDSIZE> result(sum);
     return result;
 }
 
 inline bitset<WORDSIZE> substarct(bitset<WORDSIZE> a, bitset<WORDSIZE> b)
 {
-    unsigned long diff = a.to_ulong() - b.to_ulong();
+    unsigned long long diff = ( a.to_ulong() - b.to_ulong()) % 0b10000000000000000;
     std::bitset<WORDSIZE> result(diff);
+    cout << a.to_ulong() << " - " << b.to_ulong() << " = " << diff << endl;
     return result;
+}
+
+inline bitset<WORDSIZE> rotl (bitset<WORDSIZE> x, int n)
+{
+  assert (n<WORDSIZE);
+  return (x<<n) | (x>>(WORDSIZE-n));
+}
+
+inline bitset<WORDSIZE> rotr (bitset<WORDSIZE> x, int n)
+{
+  assert (n<WORDSIZE);
+  return (x>>n) | (x<<(WORDSIZE-n));
 }
 
 class Cipher
@@ -47,7 +63,7 @@ class Cipher
    public:
     Cipher();
 
-    int verb = 0;
+    int verb = 0, show_key = false;
 
     bitset<BLOCK> encrypt_a_block(bitset<BLOCK> block);
     void encrypt(string, string);

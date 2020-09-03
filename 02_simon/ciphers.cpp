@@ -1,7 +1,4 @@
 #include "ciphers.h"
-#include <assert.h>
-#include <cstdlib>
-#include <fstream>
 
 Cipher::Cipher()
 {
@@ -36,14 +33,14 @@ void Cipher::expand_key()
             roundkey.set(j, key[key_posision++]);
         }
 #ifdef SIMON
-        ls.push_back(roundkey);
+        keys.push_back(roundkey);
 #else
         if (i > 0)
             ls.push_back(roundkey);
         else
             keys.push_back(roundkey);
 #endif
-        if (verb > 0)
+        if (show_key)
             cout << "c key for round " << i + 1 << " : " << roundkey << endl;
     }
 #ifdef SIMON
@@ -62,11 +59,11 @@ void Cipher::expand_key()
     bitset<WORDSIZE> k, l, bit_i;
     for (int i = 0; i < ROUNDS - 1; i++) {
         bit_i = i;
-        l = binAdd(keys[i], (ls[i] >> ALPHA)) ^ bit_i;
+        l = binAdd(keys[i], rotl(ls[i] , - ALPHA)) ^ bit_i;
         ls.push_back(l);
-        k = (keys[i] << ALPHA) ^ ls[i + NUMKEYWORDS - 1];
+        k = rotl(keys[i], ALPHA) ^ ls[i + NUMKEYWORDS - 1];
         keys.push_back(k);
-        if (verb > 0)
+        if (show_key)
             cout << "c key for round " << i + 1 << " : " << roundkey << endl;
     }
 #endif
@@ -127,9 +124,12 @@ bitset<BLOCK> Cipher::encrypt_a_block(bitset<BLOCK> block)
         left = right ^ ((left << 1) & (left << 8)) ^ (left << 2) ^ keys[i];
         right = tmp;
 #else
-        left = binAdd((left >> ALPHA), right) ^ keys[i];
-        right = (right << BETA) ^ left;
+        left = binAdd(rotr(left, ALPHA), right) ^ keys[i];
+        right = rotl(right, BETA) ^ left;
 #endif
+        if(verb > 2)
+            cout << "c round " << i << " encrypts to "
+            << right << " " << left << endl;
     }
 
     for (int j = 0; j < BLOCK / 2; j++) {
@@ -197,6 +197,7 @@ bitset<BLOCK> Cipher::decrypt_a_block(bitset<BLOCK> block)
         left.set(j, block[j]);
         right.set(j, block[j + BLOCK / 2]);
     }
+        cout << block << " l -> "<< left<< " r -> " << right << endl;
 
     for (int i = 0; i < ROUNDS; i++) {
 #ifdef SIMON
@@ -204,9 +205,13 @@ bitset<BLOCK> Cipher::decrypt_a_block(bitset<BLOCK> block)
         right = left ^ ((right << 1) & (right << 8)) ^ (right << 2) ^ keys[ROUNDS - i - 1];
         left = tmp;
 #else
-        right = (left ^ right) >> BETA;
-        left = substarct(((left ^ keys[i]) << ALPHA), right);
+        cout << " l -> "<< left<< " r -> " << right << endl;
+        right = rotr((left ^ right), BETA);
+        left = substarct(rotl((left ^ keys[ROUNDS - i - 1]), ALPHA), right);
 #endif
+        if(verb > 2)
+            cout << "c round " << i << " decrypts to "
+            << right << " " << left << endl;
     }
 
     for (int j = 0; j < BLOCK / 2; j++) {

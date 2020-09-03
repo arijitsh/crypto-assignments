@@ -1,7 +1,5 @@
 #include <boost/program_options.hpp>
 #include <boost/program_options/options_description.hpp>
-#include <cstdlib>
-#include <iostream>
 #include "ciphers.h"
 
 using namespace std;
@@ -18,6 +16,7 @@ int main(int argc, char **argv)
     try {
         po::options_description desc("Allowed options");
         desc.add_options()("help", "produce help message")(
+            "show-key", "show round keys")(
             "verb", po::value<int>(), "verbosity 1 : show round key 2 : show steps for encryption")(
             "key", po::value<std::string>(), "key file")("encrypt", po::value<std::string>(),
                                                          "file to encrypt")(
@@ -34,7 +33,9 @@ int main(int argc, char **argv)
         if (vm.count("verb")) {
             S->verb = vm["verb"].as<int>();
         }
-
+        if (vm.count("show-key")) {
+            S->show_key = true;
+        }
         if (vm.count("encrypt")) {
             if (vm.count("decrypt")) {
                 cout << "c encrypt OR decrypt, not both" << endl;

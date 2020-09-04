@@ -121,7 +121,7 @@ bitset<BLOCK> Cipher::encrypt_a_block(bitset<BLOCK> block)
     for (int i = 0; i < ROUNDS; i++) {
 #ifdef SIMON
         tmp = left;
-        left = right ^ ((left << 1) & (left << 8)) ^ (left << 2) ^ keys[i];
+        left = right ^ (rotl(left, 1) & rotl(left, 8)) ^ rotl(left, 2) ^ keys[i];
         right = tmp;
 #else
         left = binAdd(rotr(left, ALPHA), right) ^ keys[i];
@@ -199,7 +199,7 @@ bitset<BLOCK> Cipher::decrypt_a_block(bitset<BLOCK> block)
     for (int i = 0; i < ROUNDS; i++) {
 #ifdef SIMON
         tmp = right;
-        right = left ^ ((right << 1) & (right << 8)) ^ (right << 2) ^ keys[ROUNDS - i - 1];
+        right = left ^ (rotl(right, 1) & rotl(right, 8)) ^ rotl(right, 2) ^ keys[ROUNDS - i - 1];
         left = tmp;
 #else
         right = rotr((left ^ right), BETA);

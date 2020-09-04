@@ -15,8 +15,7 @@ int main(int argc, char **argv)
 
     try {
         po::options_description desc("Allowed options");
-        desc.add_options()("help", "produce help message")(
-            "show-key", "show round keys")(
+        desc.add_options()("help", "produce help message")("show-key", "show round keys")(
             "verb", po::value<int>(), "verbosity 1 : show round key 2 : show steps for encryption")(
             "key", po::value<std::string>(), "key file")("encrypt", po::value<std::string>(),
                                                          "file to encrypt")(

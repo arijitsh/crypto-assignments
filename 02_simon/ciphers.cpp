@@ -59,7 +59,7 @@ void Cipher::expand_key()
     bitset<WORDSIZE> k, l, bit_i;
     for (int i = 0; i < ROUNDS - 1; i++) {
         bit_i = i;
-        l = binAdd(keys[i], rotl(ls[i] , - ALPHA)) ^ bit_i;
+        l = binAdd(keys[i], rotl(ls[i], -ALPHA)) ^ bit_i;
         ls.push_back(l);
         k = rotl(keys[i], ALPHA) ^ ls[i + NUMKEYWORDS - 1];
         keys.push_back(k);
@@ -127,9 +127,8 @@ bitset<BLOCK> Cipher::encrypt_a_block(bitset<BLOCK> block)
         left = binAdd(rotr(left, ALPHA), right) ^ keys[i];
         right = rotl(right, BETA) ^ left;
 #endif
-        if(verb > 1)
-            cout << "c round " << i << " encrypts to "
-            << right << " " << left << endl;
+        if (verb > 1)
+            cout << "c round " << i << " encrypts to " << right << " " << left << endl;
     }
 
     for (int j = 0; j < BLOCK / 2; j++) {
@@ -205,9 +204,8 @@ bitset<BLOCK> Cipher::decrypt_a_block(bitset<BLOCK> block)
         right = rotr((left ^ right), BETA);
         left = rotl(substarct((left ^ keys[ROUNDS - i - 1]), right), ALPHA);
 #endif
-        if(verb > 1)
-            cout << "c round " << i << " decrypts to "
-            << right << " " << left << endl;
+        if (verb > 1)
+            cout << "c round " << i << " decrypts to " << right << " " << left << endl;
     }
 
     for (int j = 0; j < BLOCK / 2; j++) {

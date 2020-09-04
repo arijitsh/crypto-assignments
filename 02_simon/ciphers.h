@@ -1,14 +1,14 @@
 #ifndef SIMON_H_INCLUDED
 #define SIMON_H_INCLUDED
 
+#include <assert.h>
+#include <bit>
 #include <bitset>
 #include <cstdio>
 #include <cstdlib>
+#include <fstream>
 #include <iostream>
 #include <vector>
-#include <bit>
-#include <assert.h>
-#include <fstream>
 // setting up simon 32/64
 
 #define WORDSIZE 16   // word size
@@ -26,28 +26,28 @@ using namespace std;
 
 inline bitset<WORDSIZE> binAdd(bitset<WORDSIZE> a, bitset<WORDSIZE> b)
 {
-    unsigned long sum = ( a.to_ulong() + b.to_ulong()) % 0x10000;
+    unsigned long sum = (a.to_ulong() + b.to_ulong()) % 0x10000;
     std::bitset<WORDSIZE> result(sum);
     return result;
 }
 
 inline bitset<WORDSIZE> substarct(bitset<WORDSIZE> a, bitset<WORDSIZE> b)
 {
-    unsigned long long diff = ( a.to_ulong() - b.to_ulong()) % 0x10000;
+    unsigned long long diff = (a.to_ulong() - b.to_ulong()) % 0x10000;
     std::bitset<WORDSIZE> result(diff);
     return result;
 }
 
-inline bitset<WORDSIZE> rotl (bitset<WORDSIZE> x, int n)
+inline bitset<WORDSIZE> rotl(bitset<WORDSIZE> x, int n)
 {
-  assert (n<WORDSIZE);
-  return (x<<n) | (x>>(WORDSIZE-n));
+    assert(n < WORDSIZE);
+    return (x << n) | (x >> (WORDSIZE - n));
 }
 
-inline bitset<WORDSIZE> rotr (bitset<WORDSIZE> x, int n)
+inline bitset<WORDSIZE> rotr(bitset<WORDSIZE> x, int n)
 {
-  assert (n<WORDSIZE);
-  return (x>>n) | (x<<(WORDSIZE-n));
+    assert(n < WORDSIZE);
+    return (x >> n) | (x << (WORDSIZE - n));
 }
 
 class Cipher

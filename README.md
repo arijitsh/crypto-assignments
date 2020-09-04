@@ -11,17 +11,36 @@ git clone https://github.com/arijitsh/crypto-assignments.git
 cd crypto-assignments
 ```
 
-## Assignment - 2 : Simon cipher
+## Assignment - 2 : Simon and Speck ciphers
 
-Build and execute:
+### Simon Cipher
+
+Build and execute :
 ```
-cd 02_simon
-cmake .
+cd 02_block_ciphers
+cmake -DSPECK=OFF -DSIMON=ON .
 make
 ./simon --encrypt <plaintext file> --key <keyfile>
 ./simon --decrypt <ciphertext file> --key <keyfile>
 ```
-A sample plaintext file `sample.txt` and a keyfile `key.txt` is included. Issue `./simon --help` for more options. Use `--verb 1` or `--verb 2` to see the key expansion and encryption process.
+A sample plaintext file `sample.txt` and a keyfile `key.txt` are included. During encryption and decryption, new files are generated with prefixes `en_` and `dec_` to existing filename. For example, when a file named `sample.txt` is encrypted, a file called `en_sample.txt` is generated, when a file named `en_sample.txt` is encrypted, a file called `dec_en_sample.txt` is generated.
+
+Issue `--help` for more options. Use `--verb 1` or `--verb 2` to see encryption process. Use `--show-key` to see the key expansion.
+
+### Speck Cipher
+
+Build and execute :
+```
+cd 02_block_ciphers
+cmake -DSPECK=ON -DSIMON=OFF .
+make
+./speck --encrypt <plaintext file> --key <keyfile>
+./speck --decrypt <ciphertext file> --key <keyfile>
+```
+
+Instructions are same as Simon.
+
+Simon 32/64 and Speck 32/64 is built in this process. Change parameters in `#defines` in `cipher.h` to build other versions.
 
 ## Assignment - 1 : Frequency Analysis
 Source Code : `01_freqency_analysis.py`

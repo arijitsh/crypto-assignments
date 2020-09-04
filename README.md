@@ -23,7 +23,7 @@ make
 ./simon --encrypt <plaintext file> --key <keyfile>
 ./simon --decrypt <ciphertext file> --key <keyfile>
 ```
-A sample plaintext file `sample.txt` and a keyfile `key.txt` are included. During encryption and decryption, new files are generated with prefixes `en_` and `dec_` to existing filename. For example, when a file named `sample.txt` is encrypted, a file called `en_sample.txt` is generated, when a file named `en_sample.txt` is encrypted, a file called `dec_en_sample.txt` is generated.
+A sample plaintext file `sample.txt` and a keyfile `key.txt` are included. During encryption and decryption, new files are generated with prefixes `en_` and `dec_` to existing filename. For example, when a file named `sample.txt` is encrypted, a file called `en_sample.txt` is generated, when a file named `en_sample.txt` is decrypted, a file called `dec_en_sample.txt` is generated.
 
 Issue `--help` for more options. Use `--verb 1` or `--verb 2` to see encryption process. Use `--show-key` to see the key expansion.
 

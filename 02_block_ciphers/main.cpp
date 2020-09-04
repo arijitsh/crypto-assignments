@@ -13,6 +13,12 @@ int main(int argc, char **argv)
     string filename, en_filename, dec_filename, key_file;
     bool encrypt_mode = true;
 
+#ifdef SIMON
+    cout << "c This is Simon " << ROUNDS << "/" << KEYSIZE << endl;
+#else
+    cout << "c This is Speck " << ROUNDS << "/" << KEYSIZE << endl;
+#endif
+
     try {
         po::options_description desc("Allowed options");
         desc.add_options()("help", "produce help message")("show-key", "show round keys")(
@@ -38,7 +44,7 @@ int main(int argc, char **argv)
         if (vm.count("encrypt")) {
             if (vm.count("decrypt")) {
                 cout << "c encrypt OR decrypt, not both" << endl;
-                assert(false);
+                return 0;
             }
             filename = vm["encrypt"].as<std::string>();
             en_filename = "en_";
@@ -52,7 +58,7 @@ int main(int argc, char **argv)
             encrypt_mode = false;
         } else {
             cout << "c please mention a file to encrypt or decrypt." << endl;
-            assert(false);
+            return 0;
         }
 
         if (vm.count("key")) {
@@ -60,7 +66,7 @@ int main(int argc, char **argv)
             cout << "c using key from file " << key_file << endl;
         } else {
             cout << "c please provide a key for encryption." << endl;
-            assert(false);
+            return 0;
         }
 
     } catch (exception &e) {

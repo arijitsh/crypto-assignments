@@ -26,17 +26,15 @@ using namespace std;
 
 inline bitset<WORDSIZE> binAdd(bitset<WORDSIZE> a, bitset<WORDSIZE> b)
 {
-    a >>= 8;
-    unsigned long sum = ( a.to_ulong() + b.to_ulong()) % 0b10000000000000000;
+    unsigned long sum = ( a.to_ulong() + b.to_ulong()) % 0x10000;
     std::bitset<WORDSIZE> result(sum);
     return result;
 }
 
 inline bitset<WORDSIZE> substarct(bitset<WORDSIZE> a, bitset<WORDSIZE> b)
 {
-    unsigned long long diff = ( a.to_ulong() - b.to_ulong()) % 0b10000000000000000;
+    unsigned long long diff = ( a.to_ulong() - b.to_ulong()) % 0x10000;
     std::bitset<WORDSIZE> result(diff);
-    cout << a.to_ulong() << " - " << b.to_ulong() << " = " << diff << endl;
     return result;
 }
 

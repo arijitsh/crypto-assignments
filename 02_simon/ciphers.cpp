@@ -92,7 +92,7 @@ void Cipher::encrypt(string filename, string en_filename)
         if (chars_added == BLOCK / 8) {
             chars_added = 0;
             en_block = encrypt_a_block(block);
-            if (verb > 1)
+            if (verb > 0)
                 cout << "c plaintext block : " << block << " ciphertext block : " << en_block
                      << endl;
             for (int i = 0; i < BLOCK / 8; i++) {
@@ -127,7 +127,7 @@ bitset<BLOCK> Cipher::encrypt_a_block(bitset<BLOCK> block)
         left = binAdd(rotr(left, ALPHA), right) ^ keys[i];
         right = rotl(right, BETA) ^ left;
 #endif
-        if(verb > 2)
+        if(verb > 1)
             cout << "c round " << i << " encrypts to "
             << right << " " << left << endl;
     }
@@ -162,15 +162,13 @@ void Cipher::decrypt(string filename, string dec_filename)
         one_char <<= 24;
         bitset<8> y = c;
         block >>= 8;
-        if (verb > 1)
-            cout << " c " << block << " " << one_char << " " << y << endl;
         block |= one_char;
         chars_added++;
 
         if (chars_added == BLOCK / 8) {
             chars_added = 0;
             en_block = decrypt_a_block(block);
-            if (verb > 1)
+            if (verb > 0)
                 cout << "c plaintext block : " << block << " ciphertext block : " << en_block
                      << endl;
             std::string word("");
@@ -197,7 +195,6 @@ bitset<BLOCK> Cipher::decrypt_a_block(bitset<BLOCK> block)
         left.set(j, block[j]);
         right.set(j, block[j + BLOCK / 2]);
     }
-        cout << block << " l -> "<< left<< " r -> " << right << endl;
 
     for (int i = 0; i < ROUNDS; i++) {
 #ifdef SIMON
@@ -205,11 +202,10 @@ bitset<BLOCK> Cipher::decrypt_a_block(bitset<BLOCK> block)
         right = left ^ ((right << 1) & (right << 8)) ^ (right << 2) ^ keys[ROUNDS - i - 1];
         left = tmp;
 #else
-        cout << " l -> "<< left<< " r -> " << right << endl;
         right = rotr((left ^ right), BETA);
-        left = substarct(rotl((left ^ keys[ROUNDS - i - 1]), ALPHA), right);
+        left = rotl(substarct((left ^ keys[ROUNDS - i - 1]), right), ALPHA);
 #endif
-        if(verb > 2)
+        if(verb > 1)
             cout << "c round " << i << " decrypts to "
             << right << " " << left << endl;
     }
